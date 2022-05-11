@@ -18,7 +18,7 @@ var port = process.env.PORT;
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false }})
 
 
-/************************USUARIO***************************/
+/************************USUARIO**************************/
 
 app.get('/', (req, res) => {
     pool.connect((err, client) => {
