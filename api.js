@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
             return res.status(401).send('Conexão não autorizada!')
         }
         res.status(200).send('Conectado com sucesso!')
+        client.release()
     })
 })
 
@@ -58,7 +59,9 @@ app.post('/usuarios', (req, res) => {
                     res.status(201).send({
                         mensagem: 'criado com sucesso',
                         status: 201
+                        
                     })
+                    client.release()
                 })
             })
         })
@@ -76,6 +79,7 @@ app.get('/usuarios', (req, res) => {
                 return res.status(401).send('Não foi possível realizar a consulta!')
             }
             res.status(200).send(result.rows)
+            client.release()
         })
     })
 })
@@ -90,6 +94,7 @@ app.get('/usuarios/:id', (req, res) => {
                 return res.status(401).send('Operação não autorizada!')
             }
             res.status(201).send(result.rows[0])
+            client.release()
         })
     })
 })
@@ -107,6 +112,7 @@ app.delete('/usuarios/:id', (req, res) => {
                 mensagem: 'Usuário deletado com sucesso!',
                 status: 201
             })
+            client.release()
         })
     })
 })
@@ -136,6 +142,7 @@ app.put('/usuarios/:id', (req, res) => {
                 })
             } else
                 res.status(200).send('Usuário não encontrado na base de dados!')
+                client.release()
 
         })
     })
@@ -187,6 +194,7 @@ app.get('/', (req, res) => {
             return res.status(401).send('Conexão não autorizada!')
         }
         res.status(200).send('Conectado com sucesso!')
+        client.release()
     })
 })
 
@@ -231,6 +239,7 @@ app.get('/servicos', (req, res) => {
                 return res.status(401).send('Não foi possível realizar a consulta!')
             }
             res.status(200).send(result.rows)
+            client.release()
         })
     })
 })
@@ -245,6 +254,7 @@ app.get('/servicos/:id', (req, res) => {
                 return res.status(401).send('Operação não autorizada!')
             }
             res.status(201).send(result.rows[0])
+            client.release()
         })
     })
 })
@@ -262,6 +272,7 @@ app.delete('/servicos/:id', (req, res) => {
                 mensagem: 'Serviço deletado com sucesso!',
                 status: 201
             })
+            client.release()
         })
     })
 })
@@ -291,6 +302,7 @@ app.put('/servicos/:id', (req, res) => {
                 })
             } else
                 res.status(200).send('Serviço não encontrado na base de dados!')
+                client.release()
 
         })
     })
@@ -304,6 +316,7 @@ app.get('/', (req, res) => {
             return res.status(401).send('Conexão não autorizada!')
         }
         res.status(200).send('Conectado com sucesso!')
+        client.release()
     })
 })
 
@@ -333,6 +346,7 @@ app.post('/horarios', (req, res) => {
                     mensagem: 'Agendamento criado com sucesso!',
                     status: 201
                 })
+                client.release()
             })
 
         })
@@ -350,6 +364,7 @@ app.get('/horarios', (req, res) => {
                 return res.status(401).send('Não foi possível realizar a consulta!')
             }
             res.status(200).send(result.rows)
+            client.release()
         })
     })
 })
@@ -364,6 +379,7 @@ app.get('/horarios/:id', (req, res) => {
                 return res.status(401).send('Operação não autorizada!')
             }
             res.status(201).send(result.rows[0])
+            client.release()
         })
     })
 })
@@ -381,6 +397,7 @@ app.delete('/horarios/:id', (req, res) => {
                 mensagem: 'Agendamento deletado com sucesso!',
                 status: 201
             })
+            client.release()
         })
     })
 })
@@ -410,6 +427,7 @@ app.put('/horarios/:id', (req, res) => {
                 })
             } else
                 res.status(200).send('Agendamento não encontrado na base de dados!')
+                client.release()
 
         })
     })
@@ -423,6 +441,7 @@ app.get('/', (req, res) => {
             return res.status(401).send('Conexão não autorizada!')
         }
         res.status(200).send('Conectado com sucesso!')
+        client.release()
     })
 })
 
@@ -450,6 +469,7 @@ app.post('/funcionarios', (req, res) => {
                     mensagem: 'Funcionário criado com sucesso!',
                     status: 201
                 })
+                client.release()
             })
 
         })
@@ -467,6 +487,7 @@ app.get('/funcionarios', (req, res) => {
                 return res.status(401).send('Não foi possível realizar a consulta!')
             }
             res.status(200).send(result.rows)
+            client.release()
         })
     })
 })
@@ -481,6 +502,7 @@ app.get('/funcionarios/:id', (req, res) => {
                 return res.status(401).send('Operação não autorizada!')
             }
             res.status(201).send(result.rows[0])
+            client.release()
         })
     })
 })
@@ -498,6 +520,7 @@ app.delete('/funcionarios/:id', (req, res) => {
                 mensagem: 'Funcionário deletado com sucesso!',
                 status: 201
             })
+            client.release()
         })
     })
 })
@@ -527,6 +550,7 @@ app.put('/funcionarios/:id', (req, res) => {
                 })
             } else
                 res.status(200).send('Funcionário não encontrado na base de dados!')
+                client.release()
 
         })
     })
