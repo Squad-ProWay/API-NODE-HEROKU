@@ -13,7 +13,7 @@ app.use(express.json())
 var pg = require('pg')
 var consString = process.env.DATABASE_URL;
 var port = process.env.PORT;
-const login = require('./middleware/login')
+const login = require('./Middleware/login')
 
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false }})
 
