@@ -160,9 +160,9 @@ app.post('/usuarios/login', (req, res) => {
                     }
                     if (results) { //geração do token
                         let token = jwt.sign({
-                                email: result.rows[0].email,
-                                perfil: result.rows[0].perfil
-                            },
+                            email: result.rows[0].email,
+                            perfil: result.rows[0].perfil
+                        },
                             process.env.JWTKEY, { expiresIn: '2h' })
                         return res.status(200).send({
                             message: 'Conectado com sucesso',
