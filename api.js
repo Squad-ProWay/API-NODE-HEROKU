@@ -1,5 +1,4 @@
 /************************CONFIG***************************/
-const login = require('./Middleware/login')
 const express = require('express')
 const app = express()
 
@@ -14,6 +13,7 @@ app.use(express.json())
 var pg = require('pg')
 var consString = process.env.DATABASE_URL;
 var port = process.env.PORT;
+const login = require('./middleware/login')
 
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false }})
 
@@ -163,7 +163,7 @@ app.post('/usuarios/login', (req, res) => {
                                 email: result.rows[0].email,
                                 perfil: result.rows[0].perfil
                             },
-                            process.env.JWTKEY, { expiresIn: '1h' })
+                            process.env.JWTKEY, { expiresIn: '2h' })
                         return res.status(200).send({
                             message: 'Conectado com sucesso',
                             token: token
