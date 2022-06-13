@@ -556,4 +556,129 @@ app.put('/funcionarios/:id', (req, res) => {
     })
 })
 
+
+/************************CLIENTES***************************/
+
+app.get('/', (req, res) => {
+    pool.connect((err, client) => {
+        if (err) {
+            return res.status(401).send('Conexão não autorizada!')
+        }
+        res.status(200).send('Conectado com sucesso!')
+        client.release()
+    })
+})
+
+app.post('/clientes', (req, res) => {
+    pool.connect((err, client) => {
+        if (err) {
+            return res.status(401).send('Conexão não autorizada!')
+        }
+
+        client.query('select * from clientes where cpf = $1', [req.body.cpf], (error, result) => {
+            if (error) {
+                return res.status(401).send('Operação não autorizada')
+            }
+
+            if (result.rowCount > 0) {
+                return res.status(200).send('Cliente já cadastrado!')
+            }
+
+            var sql = 'insert into clientes (nome, cpf, cidade, cep, estado, endereco, email, id_usuario) values ($1, $2, $3, $4, $5, $6, $7, $8)'
+            client.query(sql, [req.body.nome, req.body.cpf, req.body.cidade, req.body.cep, req.body.estado, req.body.endereco, req.body.email, req.body.id_usuario], (error, result) => {
+                if (error) {
+                    return res.status(403).send('Operação não permitida!')
+                }
+                res.status(201).send({
+                    mensagem: 'Cliente criado com sucesso!',
+                    status: 201
+                })
+                client.release()
+            })
+
+        })
+    })
+})
+
+
+app.get('/clientes', (req, res) => {
+    pool.connect((err, client) => {
+        if (err) {
+            res.status(401).send('Conexão não autorizada!')
+        }
+        client.query('select * from clientes', (error, result) => {
+            if (error) {
+                return res.status(401).send('Não foi possível realizar a consulta!')
+            }
+            res.status(200).send(result.rows)
+            client.release()
+        })
+    })
+})
+
+app.get('/clientes/:id', (req, res) => {
+    pool.connect((err, client) => {
+        if (err) {
+            return res.status(401).send('Conexão não autorizada!')
+        }
+        client.query('select * from clientes where id = $1', [req.params.id], (error, result) => {
+            if (error) {
+                return res.status(401).send('Operação não autorizada!')
+            }
+            res.status(201).send(result.rows[0])
+            client.release()
+        })
+    })
+})
+
+app.delete('/clientes/:id', (req, res) => {
+    pool.connect((err, client) => {
+        if (err) {
+            return res.status(401).send('Conexão não autorizada!')
+        }
+        client.query('delete from clientes where id = $1', [req.params.id], (error, result) => {
+            if (error) {
+                return res.status(401).send('Operação não autorizada!')
+            }
+            res.status(201).send({
+                mensagem: 'cliente deletado com sucesso!',
+                status: 201
+            })
+            client.release()
+        })
+    })
+})
+
+app.put('/clientes/:id', (req, res) => {
+    //res.status(200).send('Rota update criada')
+    pool.connect((err, client) => {
+        if (err) {
+            return res.status(401).send('Conexão não autorizada!')
+        }
+
+        client.query('select * from clientes where id = $1', [req.params.id], (error, result) => {
+            if (error) {
+                return res.status(401).send('Operação não autorizada!')
+            }
+            // update usuarios set senha = $1, perfil = $2 where email=$3
+            if (result.rowCount > 0) {
+                var sql = 'update clientes set nome = $1, cpf = $2, cidade = $3,  cep= $4, estado = $5, endereco = $6, email = $7, id_usuario = $8 where id = $9'
+                let valores = [req.body.nome, req.body.cpf, req.body.cidade, req.body.cep, req.body.estado, req.body.endereco, req.body.email, req.body.id_usuario, req.body.id]
+                client.query(sql, valores, (error2, result2) => {
+                    if (error2) {
+                        return res.status(401).send('Operação não permitida!')
+                    }
+                    if (result2.rowCount > 0) {
+                        return res.status(200).send('Cliente alterado com sucesso!')
+                    }
+                })
+            } else
+                res.status(200).send('Cliente não encontrado na base de dados!')
+                client.release()
+
+        })
+    })
+})
+
+
 app.listen(process.env.PORT || 8081, () => console.log('Servidor funcionando'))
