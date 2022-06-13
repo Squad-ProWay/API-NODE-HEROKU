@@ -616,12 +616,12 @@ app.get('/clientes', (req, res) => {
     })
 })
 
-app.get('/clientes/:id', (req, res) => {
+app.get('/clientes/:id_cliente', (req, res) => {
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
         }
-        client.query('select * from clientes where id = $1', [req.params.id], (error, result) => {
+        client.query('select * from clientes where id_cliente = $1', [req.params.id_cliente], (error, result) => {
             if (error) {
                 return res.status(401).send('Operação não autorizada!')
             }
@@ -631,12 +631,12 @@ app.get('/clientes/:id', (req, res) => {
     })
 })
 
-app.delete('/clientes/:id', (req, res) => {
+app.delete('/clientes/:id_cliente', (req, res) => {
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
         }
-        client.query('delete from clientes where id = $1', [req.params.id], (error, result) => {
+        client.query('delete from clientes where id_cliente = $1', [req.params.id_cliente], (error, result) => {
             if (error) {
                 return res.status(401).send('Operação não autorizada!')
             }
@@ -649,21 +649,21 @@ app.delete('/clientes/:id', (req, res) => {
     })
 })
 
-app.put('/clientes/:id', (req, res) => {
+app.put('/clientes/:id_cliente', (req, res) => {
     //res.status(200).send('Rota update criada')
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
         }
 
-        client.query('select * from clientes where id = $1', [req.params.id], (error, result) => {
+        client.query('select * from clientes where id_cliente = $1', [req.params.id_cliente], (error, result) => {
             if (error) {
                 return res.status(401).send('Operação não autorizada!')
             }
             // update usuarios set senha = $1, perfil = $2 where email=$3
             if (result.rowCount > 0) {
-                var sql = 'update clientes set nome = $1, cpf = $2, cidade = $3,  cep= $4, estado = $5, endereco = $6, email = $7, id_usuario = $8 where id = $9'
-                let valores = [req.body.nome, req.body.cpf, req.body.cidade, req.body.cep, req.body.estado, req.body.endereco, req.body.email, req.body.id_usuario, req.body.id]
+                var sql = 'update clientes set nome = $1, cpf = $2, cidade = $3,  cep= $4, estado = $5, endereco = $6, email = $7, id_usuario = $8 where id_cliente = $9'
+                let valores = [req.body.nome, req.body.cpf, req.body.cidade, req.body.cep, req.body.estado, req.body.endereco, req.body.email, req.body.id_usuario, req.body.id_cliente]
                 client.query(sql, valores, (error2, result2) => {
                     if (error2) {
                         return res.status(401).send('Operação não permitida!')
