@@ -337,8 +337,8 @@ app.post('/horarios', (req, res) => {
                 return res.status(200).send('Você já realizou agendamento!')
             }
 
-            var sql = 'insert into horarios (nome, telefone, email, dia, horario, procedimento, observacao) values ($1, $2, $3, $4, $5, $6, $7)'
-            client.query(sql, [req.body.nome, req.body.telefone, req.body.email, req.body.dia, req.body.horario, req.body.procedimento, req.body.observacao], (error, result) => {
+            var sql = 'insert into horarios (nome, telefone, email, dia, horario, procedimento, observacao, id_cliente, id_funcionario, id_servico) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)'
+            client.query(sql, [req.body.nome, req.body.telefone, req.body.email, req.body.dia, req.body.horario, req.body.procedimento, req.body.observacao, req.body.id_cliente, req.body.funcionario, req.body.servico], (error, result) => {
                 if (error) {
                     return res.status(403).send('Operação não permitida!')
                 }
@@ -415,8 +415,8 @@ app.put('/horarios/:id', (req, res) => {
             }
             // update usuarios set senha = $1, perfil = $2 where email=$3
             if (result.rowCount > 0) {
-                var sql = 'update horarios set nome = $1, telefone = $2, email = $3, dia = $4, horario = $5, procedimento = $6, observacao = $7 where id = $8'
-                let valores = [req.body.nome, req.body.telefone, req.body.email, req.body.dia, req.body.horario, req.body.procedimento, req.body.observacao, req.body.id]
+                var sql = 'update horarios set nome = $1, telefone = $2, email = $3, dia = $4, horario = $5, procedimento = $6, observacao = $7, id_cliente = $8, id_funcionario = $9, id_servico = $10  where id = $11'
+                let valores = [req.body.nome, req.body.telefone, req.body.email, req.body.dia, req.body.horario, req.body.procedimento, req.body.observacao, req.body.id_cliente, req.body.id_funcionario, req.body.id_servico, req.body.id]
                 client.query(sql, valores, (error2, result2) => {
                     if (error2) {
                         return res.status(401).send('Operação não permitida!')
