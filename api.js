@@ -359,7 +359,7 @@ app.post('/horarios', (req, res) => {
             }
 
             var sql = 'insert into horarios (nome, telefone, email, dia, horario, procedimento, observacao, id_cliente, id_funcionario, id_servico) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)'
-            client.query(sql, [req.body.nome, req.body.telefone, req.body.email, req.body.dia, req.body.horario, req.body.procedimento, req.body.observacao, req.body.id_cliente, req.body.funcionario, req.body.servico], (error, result) => {
+            client.query(sql, [req.body.nome, req.body.telefone, req.body.email, req.body.dia, req.body.horario, req.body.procedimento, req.body.observacao, req.body.id_cliente, req.body.id_funcionario, req.body.id_servico], (error, result) => {
                 if (error) {
                     return res.status(403).send('Operação não permitida!')
                 }
