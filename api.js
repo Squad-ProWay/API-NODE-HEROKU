@@ -229,7 +229,7 @@ app.post('/servicos', (req, res) => {
             }
 
             var sql = 'insert into servicos (nome, descricao, preco, duracao, status, id_funcionario) values ($1, $2, $3, $4, $5, $6)'
-            client.query(sql, [req.body.nome, req.body.descricao, req.body.preco, req.body.duracao, req.body.status, req.body.id_funcionario], (error, result) => {
+            client.query(sql, [req.body.nome, req.body.descricao, req.body.preco, req.body.duracao, req.body.status, req.body.funcionario], (error, result) => {
                 if (error) {
                     return res.status(403).send('Operação não permitida!')
                 }
