@@ -2,6 +2,13 @@
 const express = require('express')
 const app = express()
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
+
+
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 
@@ -21,6 +28,7 @@ const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { re
 /************************USUARIO**************************/
 
 app.get('/', (req, res) => {
+    // #swagger.description = 'Endpoint para verificação de conexão.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -32,6 +40,7 @@ app.get('/', (req, res) => {
 
 
 app.post('/usuarios', (req, res) => {
+    // #swagger.description = 'Endpoint para cadastrar um usuário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada')
@@ -70,6 +79,7 @@ app.post('/usuarios', (req, res) => {
 
 
 app.get('/usuarios', (req, res) => {
+    // #swagger.description = 'Endpoint para obter todos os usuário.'
     pool.connect((err, client) => {
         if (err) {
             res.status(401).send('Conexão não autorizada!')
@@ -85,6 +95,7 @@ app.get('/usuarios', (req, res) => {
 })
 
 app.get('/usuarios/:id', (req, res) => {
+    // #swagger.description = 'Endpoint para obter um usuário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -100,6 +111,7 @@ app.get('/usuarios/:id', (req, res) => {
 })
 
 app.delete('/usuarios/:id', (req, res) => {
+    // #swagger.description = 'Endpoint para deletar um usuário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -118,7 +130,7 @@ app.delete('/usuarios/:id', (req, res) => {
 })
 
 app.put('/usuarios/:id', (req, res) => {
-    //res.status(200).send('Rota update criada')
+    // #swagger.description = 'Endpoint para alterar um usuário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -149,6 +161,7 @@ app.put('/usuarios/:id', (req, res) => {
 })
 
 app.post('/usuarios/login', (req, res) => {
+    // #swagger.description = 'Endpoint para logar com o usuário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send("Conexão não autorizada")
@@ -189,6 +202,7 @@ app.post('/usuarios/login', (req, res) => {
 /************************SERVICOS***************************/
 
 app.get('/', (req, res) => {
+     // #swagger.description = 'Endpoint para verificação de conexão.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -199,6 +213,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/servicos', (req, res) => {
+     // #swagger.description = 'Endpoint para cadastrar um serviço.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -213,8 +228,8 @@ app.post('/servicos', (req, res) => {
                 return res.status(200).send('Serviço já cadastrado!')
             }
 
-            var sql = 'insert into servicos (nome, descricao, preco, duracao, status) values ($1, $2, $3, $4, $5)'
-            client.query(sql, [req.body.nome, req.body.descricao, req.body.preco, req.body.duracao, req.body.status], (error, result) => {
+            var sql = 'insert into servicos (nome, descricao, preco, duracao, status, id_funcionario) values ($1, $2, $3, $4, $5, $6)'
+            client.query(sql, [req.body.nome, req.body.descricao, req.body.preco, req.body.duracao, req.body.status, req.body.id_funcionario], (error, result) => {
                 if (error) {
                     return res.status(403).send('Operação não permitida!')
                 }
@@ -230,6 +245,7 @@ app.post('/servicos', (req, res) => {
 
 
 app.get('/servicos', (req, res) => {
+     // #swagger.description = 'Endpoint para obter todos os serviços.'
     pool.connect((err, client) => {
         if (err) {
             res.status(401).send('Conexão não autorizada!')
@@ -245,6 +261,7 @@ app.get('/servicos', (req, res) => {
 })
 
 app.get('/servicos/:id', (req, res) => {
+     // #swagger.description = 'Endpoint para obter um usuário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -260,6 +277,7 @@ app.get('/servicos/:id', (req, res) => {
 })
 
 app.delete('/servicos/:id', (req, res) => {
+     // #swagger.description = 'Endpoint para deletar um serviço.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -278,7 +296,7 @@ app.delete('/servicos/:id', (req, res) => {
 })
 
 app.put('/servicos/:id', (req, res) => {
-    //res.status(200).send('Rota update criada')
+     // #swagger.description = 'Endpoint para alterar um serviço.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -290,8 +308,8 @@ app.put('/servicos/:id', (req, res) => {
             }
             // update usuarios set senha = $1, perfil = $2 where email=$3
             if (result.rowCount > 0) {
-                var sql = 'update servicos set nome = $1, descricao = $2, preco = $3, duracao = $4, status = $5     where id = $6'
-                let valores = [req.body.nome, req.body.descricao, req.body.preco, req.body.duracao, req.body.status, req.body.id]
+                var sql = 'update servicos set nome = $1, descricao = $2, preco = $3, duracao = $4, status = $5, id_funcionario = $6 where id = $7'
+                let valores = [req.body.nome, req.body.descricao, req.body.preco, req.body.duracao, req.body.status, req.body.id_funcionario, req.body.id]
                 client.query(sql, valores, (error2, result2) => {
                     if (error2) {
                         return res.status(401).send('Operação não permitida!')
@@ -311,6 +329,8 @@ app.put('/servicos/:id', (req, res) => {
 /************************AGENDAMENTO***************************/
 
 app.get('/', (req, res) => {
+    // #swagger.description = 'Endpoint para verificação de conexão.'
+
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -323,6 +343,7 @@ app.get('/', (req, res) => {
 
 
 app.post('/horarios', (req, res) => {
+    // #swagger.description = 'Endpoint para cadastrar um horario.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -355,6 +376,7 @@ app.post('/horarios', (req, res) => {
 
 
 app.get('/horarios', (req, res) => {
+    // #swagger.description = 'Endpoint para obter todos os horários.'
     pool.connect((err, client) => {
         if (err) {
             res.status(401).send('Conexão não autorizada!')
@@ -370,6 +392,7 @@ app.get('/horarios', (req, res) => {
 })
 
 app.get('/horarios/:id', (req, res) => {
+    // #swagger.description = 'Endpoint para obter um horário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -385,6 +408,7 @@ app.get('/horarios/:id', (req, res) => {
 })
 
 app.delete('/horarios/:id', (req, res) => {
+    // #swagger.description = 'Endpoint para deletar um horário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -403,6 +427,7 @@ app.delete('/horarios/:id', (req, res) => {
 })
 
 app.put('/horarios/:id', (req, res) => {
+    // #swagger.description = 'Endpoint para alterar um horário.'
     //res.status(200).send('Rota update criada')
     pool.connect((err, client) => {
         if (err) {
@@ -436,6 +461,7 @@ app.put('/horarios/:id', (req, res) => {
 /************************FUNCIONARIO***************************/
 
 app.get('/', (req, res) => {
+    // #swagger.description = 'Endpoint para verificação de conexão.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -446,6 +472,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/funcionarios', (req, res) => {
+    // #swagger.description = 'Endpoint para cadastrar um funcionário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -478,6 +505,7 @@ app.post('/funcionarios', (req, res) => {
 
 
 app.get('/funcionarios', (req, res) => {
+    // #swagger.description = 'Endpoint para obter todos os funcionários.'
     pool.connect((err, client) => {
         if (err) {
             res.status(401).send('Conexão não autorizada!')
@@ -493,6 +521,7 @@ app.get('/funcionarios', (req, res) => {
 })
 
 app.get('/funcionarios/:id', (req, res) => {
+    // #swagger.description = 'Endpoint para obter um funcionário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -508,6 +537,7 @@ app.get('/funcionarios/:id', (req, res) => {
 })
 
 app.delete('/funcionarios/:id', (req, res) => {
+    // #swagger.description = 'Endpoint para deletar um funcionário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -526,7 +556,7 @@ app.delete('/funcionarios/:id', (req, res) => {
 })
 
 app.put('/funcionarios/:id', (req, res) => {
-    //res.status(200).send('Rota update criada')
+   // #swagger.description = 'Endpoint para alterar um funcionário.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -560,6 +590,7 @@ app.put('/funcionarios/:id', (req, res) => {
 /************************CLIENTES***************************/
 
 app.get('/', (req, res) => {
+    // #swagger.description = 'Endpoint para verificação de conexão.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -570,6 +601,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/clientes', (req, res) => {
+    // #swagger.description = 'Endpoint para cadastrar um cliente.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -602,6 +634,7 @@ app.post('/clientes', (req, res) => {
 
 
 app.get('/clientes', (req, res) => {
+    // #swagger.description = 'Endpoint para obter todos os clientes.'
     pool.connect((err, client) => {
         if (err) {
             res.status(401).send('Conexão não autorizada!')
@@ -617,6 +650,7 @@ app.get('/clientes', (req, res) => {
 })
 
 app.get('/clientes/:id_cliente', (req, res) => {
+    // #swagger.description = 'Endpoint para obter um cliente.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -632,6 +666,7 @@ app.get('/clientes/:id_cliente', (req, res) => {
 })
 
 app.delete('/clientes/:id_cliente', (req, res) => {
+    // #swagger.description = 'Endpoint para deletar um cliente.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
@@ -650,7 +685,7 @@ app.delete('/clientes/:id_cliente', (req, res) => {
 })
 
 app.put('/clientes/:id_cliente', (req, res) => {
-    //res.status(200).send('Rota update criada')
+    // #swagger.description = 'Endpoint para alterar um cliente.'
     pool.connect((err, client) => {
         if (err) {
             return res.status(401).send('Conexão não autorizada!')
