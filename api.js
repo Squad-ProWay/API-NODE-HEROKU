@@ -381,7 +381,7 @@ app.get('/horarios', (req, res) => {
         if (err) {
             res.status(401).send('Conexão não autorizada!')
         }
-        client.query('select * from horarios', (error, result) => {
+        client.query('select h.*, f.nome as nomefuncionario from horarios h , funcionarios f where h.id_funcionario = f.id', (error, result) => {
             if (error) {
                 return res.status(401).send('Não foi possível realizar a consulta!')
             }
