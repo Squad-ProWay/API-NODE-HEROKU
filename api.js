@@ -616,8 +616,8 @@ app.post('/clientes', (req, res) => {
                 return res.status(200).send('Cliente já cadastrado!')
             }
 
-            var sql = 'insert into clientes (nome, cpf, cidade, cep, estado, endereco, email, id_usuario) values ($1, $2, $3, $4, $5, $6, $7, $8)'
-            client.query(sql, [req.body.nome, req.body.cpf, req.body.cidade, req.body.cep, req.body.estado, req.body.endereco, req.body.email, req.body.id_usuario], (error, result) => {
+            var sql = 'insert into clientes (nome, cpf, cidade, cep, estado, endereco, email, telefone, id_usuario) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)'
+            client.query(sql, [req.body.nome, req.body.cpf, req.body.cidade, req.body.cep, req.body.estado, req.body.endereco, req.body.email, req.body.telefone, req.body.id_usuario], (error, result) => {
                 if (error) {
                     return res.status(403).send('Operação não permitida!')
                 }
@@ -697,8 +697,8 @@ app.put('/clientes/:id_cliente', (req, res) => {
             }
             // update usuarios set senha = $1, perfil = $2 where email=$3
             if (result.rowCount > 0) {
-                var sql = 'update clientes set nome = $1, cpf = $2, cidade = $3,  cep= $4, estado = $5, endereco = $6, email = $7, id_usuario = $8 where id_cliente = $9'
-                let valores = [req.body.nome, req.body.cpf, req.body.cidade, req.body.cep, req.body.estado, req.body.endereco, req.body.email, req.body.id_usuario, req.body.id_cliente]
+                var sql = 'update clientes set nome = $1, cpf = $2, cidade = $3,  cep= $4, estado = $5, endereco = $6, email = $7, telefone = $8, id_usuario = $9 where id_cliente = $10'
+                let valores = [req.body.nome, req.body.cpf, req.body.cidade, req.body.cep, req.body.estado, req.body.endereco, req.body.email, req.body.telefone, req.body.id_usuario, req.body.id_cliente]
                 client.query(sql, valores, (error2, result2) => {
                     if (error2) {
                         return res.status(401).send('Operação não permitida!')
