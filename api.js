@@ -164,18 +164,22 @@ app.post('/usuarios/login', (req, res) => {
     // #swagger.description = 'Endpoint para logar com o usuário.'
     pool.connect((err, client) => {
         if (err) {
-            return res.status(401).send("Conexão não autorizada")
+            return res.status(401).send({
+                message: "Conexão não autorizada!"
+            })
         }
         client.query('select * from usuarios where email = $1', [req.body.email], (error, result) => {
             if (error) {
-                return res.status(401).send('operação não permitida')
+                return res.status(401).send({
+                    message: "Operação não permitida!"
+                })
             }
             if (result.rowCount > 0) {
                 //cripotgrafar a senha enviada e comparar com a recuperada do banco
                 bcrypt.compare(req.body.senha, result.rows[0].senha, (error, results) => {
                     if (error) {
                         return res.status(401).send({
-                            message: "Falha na autenticação"
+                            message: "Falha na autenticação!"
                         })
                     }
                     if (results) { //geração do token
