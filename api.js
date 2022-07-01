@@ -353,7 +353,7 @@ app.post('/horarios', (req, res) => {
             return res.status(401).send('Conexão não autorizada!')
         }
 
-        client.query('select * from horarios where horario = $1 and dia = $2 and funcionario = $3', [req.body.horario, req.body.dia, req.body.funcionario], (error, result) => {
+        client.query('select * from horarios where horario = $1 and dia = $2 and id_funcionario = $3', [req.body.horario, req.body.dia, req.body.id_funcionario], (error, result) => {
             if (error) {
                 return res.status(401).send('Operação não autorizada')
             }
