@@ -353,13 +353,13 @@ app.post('/horarios', (req, res) => {
             return res.status(401).send('Conexão não autorizada!')
         }
 
-        client.query('select * from horarios where email = $1', [req.body.email], (error, result) => {
+        client.query('select * from horarios where horario = $1', [req.body.horario], (error, result) => {
             if (error) {
                 return res.status(401).send('Operação não autorizada')
             }
 
             if (result.rowCount > 0) {
-                return res.status(200).send('Você já realizou agendamento!')
+                return res.status(200).send('Horário ocupado!')
             }
 
             var sql = 'insert into horarios (nome, telefone, email, dia, horario, procedimento, observacao, id_cliente, id_funcionario, id_servico) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)'
