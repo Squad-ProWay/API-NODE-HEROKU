@@ -358,7 +358,7 @@ app.post('/horarios', (req, res) => {
                 return res.status(401).send('Operação não autorizada')
             }
 
-            if (result.rowCount > 3) {
+            if (result.rowCount > 20) {
                 return res.status(200).send('Horário ocupado!')
             }
 
